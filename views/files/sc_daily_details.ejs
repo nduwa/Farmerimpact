@@ -1,0 +1,531 @@
+<%- include('include/header.ejs') %>
+<%- include('include/side_menu.ejs') %>
+<!-- page content -->
+<div class="right_col" role="main">
+  <div class="container-fluid"></div>
+  <div class="">
+    <div class="row">
+      <div class="col-md-6">
+        <h5>Coffee Purchases / Site collector details</h5>
+      </div>
+      <div class="col-md-6">
+        <p class="pull-right">
+          <a href="/rtc11">Dashboard</a> / purchases
+        </p>
+      </div>
+    </div>
+    <hr>
+    <% if(errorMessage){ %>
+      <div id="alert" class="alert alert-success" >
+         <%= errorMessage %> 
+      </div>
+    <% } %>
+    <div class="clearfix"></div>
+    <h3>Site Collector Daily Journal</h3>
+    
+    <div class="row">
+      <div class="col-md-12 col-sm-12  ">
+        <div class="x_panel">
+          <%
+            let cert = 0
+            let uncert = 0
+            let user = ''
+            let site = ''
+            let nFormat = new Intl.NumberFormat();
+          if(sc_detail.length > 0){
+            
+            for(res of sc_detail){
+              if(res.certified == '1'){
+                cert = res.kilo
+              }else{
+                uncert = res.kilo
+              }
+              user = res.userID
+              site = res.site_day_lot
+            }
+          }
+          let now = new Date(res.transaction_date);
+          var year    = now.getFullYear();
+          
+          var title = 'DL'
+
+          var month   = now.getMonth()+1; 
+          var day     = now.getDate();
+          if(month.toString().length == 1) {
+              month = '0'+month;
+          }
+          if(day.toString().length == 1) {
+              day = '0'+day;
+          }   
+          var cherry_lot = title+''+user+''+year+''+month+''+day   
+          let formattedDate = now.toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
+          let transaction = new Date(res.transaction_date);
+          let trans_date  = transaction.toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric'});
+          
+            const filtered = record.filter((v, i) => record.indexOf(v) !== i)
+            const unique = new Set(filtered)
+        
+          %>
+          <div class="x_content">
+            <div class="table-responsive">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>UPLOADED TIME <%= Array.from(unique) %></th>
+                    <th><%= formattedDate %></th>
+                    <th>TRANSACTION DATE</th>
+                    <th><%= trans_date %></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th>SITE COLLECTOR NAME</th>
+                    <th><%= res.Name_Full %></th>
+                    <th>SITE COLLECTOR ID</th>
+                    <th><%= res.userID %></th>
+                  </tr>
+                  <tr>
+                    <th>SC DAILY JOURNAL LOT</th>
+                    <th><%= res.site_day_lot %></th>
+                    <th>COFFEE VALUE</th>
+                    <th><%= nFormat.format((res.cash+res.momo)) %></th>
+                  </tr>
+                  <tr>
+                    <th>AVERAGE PRICE</th>
+                    <th><%= res.unitprice %> & <%= res.bad_unit_price  %></th>
+                    <th>CERTIFIED KG</th>
+                    <th><%= nFormat.format(cert) %></th>
+                  </tr>
+                  <tr>
+                    <th>UNCERTIFIED KG</th>
+                    <th><%= nFormat.format(uncert) %></th>
+                    <th>UNTRACEABLE KG</th>
+                    <th><%= uncert %></th>
+                  </tr>
+                  <tr>
+                    <th>FLOATERS KG</th>
+                    <th><%= nFormat.format(res.floater) %></th>
+                    <th>TOTAL KG</th>
+                    <th><%= nFormat.format((res.kilo+res.floater)) %></th>
+                  </tr>
+                </tbody>
+              </table>
+              <table class="table table-striped jambo_table bulk_action">
+                <thead>
+                  <tr class="headings">
+                    <th>FLAG</th>
+                    <th class="column-title">FARMER.ID </th>
+                    <th class="column-title">FARMER.NAME </th>
+                    <th class="column-title">PAPER.RECEIPT </th>
+                    <th class="column-title">KG.CERT </th>
+                    <th class="column-title">KG.UNCERT </th>
+                    <th class="column-title">PX.PER.KG</th>
+                    <th class="column-title">FLOATER.KG </th>
+                    <th class="column-title">FLOATER.PX </th>
+                    <th class="column-title">TOTAL.KG</th>
+                    <th class="column-title">PURCHASE.DATE</th>
+                    <th class="column-title">TOTAL</th>
+                    <th class="column-title">CASH</th>
+                    <th class="column-title">MOBILE</th>
+                    <th class="column-title"></th>
+                  </tr>
+                </thead>
+                <tbody id="results">
+                  <% 
+                  let price = 0
+                  let floater = 0
+                  let fprice = 0
+                  let cash = 0
+                  let totals = 0
+                  let cherry = 0
+                  let floaters = 0
+                  let uncertified = 0
+                  let total_cash = 0
+                  let total_mobile = 0
+                  let text = 0
+                  let certificate =""
+                  let contribution_number  = famers.length;
+                    for (let j = 0; j < famers.length; j++) { 
+                      if (famers[j].paper_receipt) { 
+                        value = 'fa-info';
+                        btn = 'btn-secondary'
+                      }else{
+                        value = 'fa-info';
+                        btn = 'btn-success'
+                      } 
+                    } 
+                  for (let j = 0; j < famers.length; j++) { 
+                    total = famers[j].kilograms + famers[j].bad_kilograms
+                    price = famers[j].unitprice
+                    floater = famers[j].bad_kilograms
+                    fprice = famers[j].bad_unit_price
+                    cash = famers[j].cash_paid
+                    mobile = famers[j].total_mobile_money_payment
+                    flag = famers[j].paper_receipt;
+                    if(famers[j].approved == 0){
+                      values = 'Pending...';
+                      btns = 'btn-primary'
+                    }else{
+                      values = 'Approved';
+                      btns = 'btn-success'
+                    }
+                    if(famers[j].certification == 'NC'){
+                      certificate = 'selected'
+                    }
+                    if(famers[j].certified == '1'){data = famers[j].kilograms}else{data = 0}
+                    if(famers[j].certified == '0'){datas = famers[j].kilograms}else{datas = 0}
+                    %>
+                    <tr class="headings">
+                      <td class="a-center " style="color: #fff;">
+                        
+                        <a class="btn <%= btn %> btn-sm " >
+                          <span class="fa <%= text %>">
+                            
+                            </span> 
+                        </a>
+                      </td>
+                      <td class="column-title"><%= famers[j].farmerid %> </td>
+                      <td class="column-title"><%= famers[j].farmername %></td>
+                      <td class="column-title"><%= famers[j].paper_receipt %></td>
+                      <td class="column-title"><%= nFormat.format(data) %> </td>
+                      <td class="column-title"><%= nFormat.format(datas) %></td>
+                      <td class="column-title"><%= famers[j].unitprice %></td>
+                      <td class="column-title"><%= nFormat.format(famers[j].bad_kilograms) %></td>
+                      <td class="column-title"><%= famers[j].bad_unit_price %></td>
+                      <td class="column-title"><%= total %></td>
+                      <td class="column-title"><%= famers[j].transaction_date %></td>
+                      <td class="column-title"><%= nFormat.format(famers[j].cash_paid) %></td>
+                      <td class="column-title"><%= nFormat.format(famers[j].cash_paid) %></td>
+                      <td class="column-title"><%= nFormat.format(famers[j].total_mobile_money_payment) %></td>
+                      <td class="column-title">
+                        <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target=".bs-example-modal-md_<%= famers[j].id %>">
+                          <span class="fa fa-edit"></span>
+                        </button>
+                        <div id="action_model" class="modal fade bs-example-modal-md_<%= famers[j].id %>" tabindex="-1" role="dialog" aria-hidden="true">
+                          <div class="modal-dialog modal-md">
+                            <div class="modal-content">
+
+                              <div class="modal-header">
+                                <h1 class="modal-title" id="myModalLabel">Edit Transaction</h1>
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                                </button>
+                              </div>
+                              <div class="modal-body">
+                                <h4>Text in a modal</h4>
+                                <form action="/rtc22" method="POST" id="Edit_transaction" class="form-label-left" style="font-size: 15px; text-align: center;">
+  
+                                  <div class="form-group row">
+                                    <label class="col-form-label col-md-5 col-sm-5 ">LOT NUMBER</label>
+                                    <div class="col-md-6 col-sm-6 ">
+                                      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                      <input type="text" id="lotnumber" name="lotnumber" class="form-control" value="<%= famers[j].lotnumber %>">
+                                      <input type="hidden" id="site_day_lot" name="site_day_lot" class="form-control" value="<%= famers[j].site_day_lot %>">
+                                    </div>
+                                  </div>
+                                  <div class="form-group row">
+                                    <label class="col-form-label col-md-5 col-sm-5 ">RECEIPT NO: </label>
+                                    <div class="col-md-6 col-sm-6 ">
+                                      <input type="text" id="receipt_no"name="receipt_no" class="form-control"  value="<%= famers[j].paper_receipt %>">
+                                    </div>
+                                  </div>
+                                  <div class="form-group row">
+                                    <label class="col-form-label col-md-5 col-sm-5 ">TX DATE <span class="required">*</span>
+                                    </label>
+                                    <div class="col-md-6 col-sm-6 ">
+                                      <input class="form-control" id="trans_date" name="trans_date"  type="date" required="required" value="<%= famers[j].transaction_date %>">
+                                      
+                                    </div>
+                                  </div>
+                                  <div class="form-group row">
+                                    <label class="col-form-label col-md-5 col-sm-5 ">GOOD CHERRY QUANTITY</label>
+                                    <div class="col-md-6 col-sm-6 ">
+                                      <input type="text" id="cherry" name="cherry" class="form-control"  value="<%= famers[j].kilograms %>">
+                                    </div>
+                                  </div>
+                                  <div class="form-group row">
+                                    <label class="col-form-label col-md-5 col-sm-5 ">GOOD CHERRY UNIT PRICE</label>
+                                    <div class="col-md-6 col-sm-6 ">
+                                      <input type="text" id="cherry_price" name="cherry_price" class="form-control" value="<%= famers[j].unitprice %>">
+                                    </div>
+                                  </div>
+                                  <div class="form-group row">
+                                    <label class="col-form-label col-md-5 col-sm-5 ">TOTAL AMOUNT PAID</label>
+                                    <div class="col-md-6 col-sm-6 ">
+                                      <input type="text" id="total_price" name="total_price" class="form-control" style="color: green; font-weight: bold;" readonly="readonly"  value="<%= famers[j].cash_paid %>">
+                                    </div>
+                                  </div>
+                                  <div class="form-group row">
+                                    <label class="col-form-label col-md-5 col-sm-5 ">FLOATERS QUANTITY</label>
+                                    <div class="col-md-6 col-sm-6 ">
+                                      <input type="text" id="floaters" name="floaters" class="form-control"  value="<%= famers[j].bad_kilograms %>">
+                                    </div>
+                                  </div>
+                                  <div class="form-group row">
+                                    <label class="col-form-label col-md-5 col-sm-5 ">FLOATERS UNIT PRICE</label>
+                                    <div class="col-md-6 col-sm-6 ">
+                                      <input type="text" id="floater_price" name="floater_price" class="form-control"  value="<%= famers[j].bad_unit_price %>">
+                                    </div>
+                                  </div>
+                                  <div class="form-group row">
+                                    <label class="col-form-label col-md-5 col-sm-5 ">CERTIFICATION</label>
+                                    <div class="col-md-6 col-sm-6 ">
+                                      <select id="certification" name="certification" class="form-control" required>
+                                        <% if (famers[j].certification == 'CP'){%>
+                                        <option value="CP" selected="selected">Cafe Practice</option>
+                                        <option value="NC">Non Certified</option>
+                                        <option value="RF">Rain Forest</option>
+                                        <% }else if(famers[j].certification == 'NC'){ %>
+                                        <option value="NC" selected="selected">Non Certified</option>
+                                        <option value="CP">Cafe Practice</option>
+                                        <option value="RF">Rain Forest</option>
+                                        <% }else {%>
+                                        <option value="RF" selected="selected">Rain Forest</option>
+                                        <option value="NC">Non Certified</option>
+                                        <option value="CP">Cafe Practice</option>
+                                        <% } %>
+                                      </select>
+                                    </div>
+                                  </div>
+                                  <div class="ln_solid"></div>
+                                  <div class="form-group row">
+                                    <div class="offset-md-3 col-md-9 col-sm-9  ">
+                                      <input type="hidden" id="action" name="action" value="save_Transaction">
+                                      <button type="submit" id="save_edit_transaction"  name="save_edit_transaction" class="btn btn-success">Save Transaction</button>
+                                    </div>
+                                  </div>
+              
+                                </form>
+                              </div>
+
+                            </div>
+                          </div>
+                        </div>
+                        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bs-example-modal-lg_<%= famers[j].id %>">
+                          <span class="fa fa-trash"></span>
+                        </button>
+                        <div class="modal fade bs-example-modal-lg_<%= famers[j].id %>" tabindex="-1" role="dialog" aria-hidden="true">
+                          <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+
+                              <div class="modal-header">
+                                <h1 class="modal-title" id="myModalLabel">Confirm Delete Transaction</h1>
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span>
+                                </button>
+                              </div>
+                              <form action="/rtc22" method="POST">
+                                <div class="modal-footer">
+                                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                  <input type="hidden" name="action" id="action" value="delete_transation">
+                                  <input type="hidden" name="trans_id" id="trans_id" value="<%= famers[j].id %>">
+                                  <input type="hidden" name="day_lot" id="day_lot" value="<%= famers[j].site_day_lot %>">
+                                  <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                  <button type="submit" class="btn btn-success">Yes</button>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  <%
+                  cherry+=data
+                  floaters+=floater
+                  uncertified+=datas
+                  total_cash+=cash
+                  totals+=total
+                  total_mobile+=mobile
+                    } %>
+                  <tr style="font-weight: bold;">
+                    <td class="column-title" colspan="4"> </td>
+                    <td class="column-title"><%= nFormat.format(cherry) %> Kgs </td>
+                    <td class="column-title"><%= nFormat.format(uncertified) %> Kgs</td>
+                    <td class="column-title"><%= price %>Frw</td>
+                    <td class="column-title"><%= nFormat.format(floaters) %> Kgs</td>
+                    <td class="column-title"><%= fprice %> Frw</td>
+                    <td class="column-title"> <%= nFormat.format(totals) %> Kgs</td>
+                    <td class="column-title"></td>
+                    <td class="column-title"><%= nFormat.format(total_cash) %> Frw</td>
+                    <td class="column-title"><%= nFormat.format(total_cash) %> Frw</td>
+                    <td class="column-title"><%= nFormat.format(total_mobile) %> Frw</td>
+                    <td class="column-title"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <% let val = ''
+             
+              if(button.length > 0){
+              val = 'disabled'
+              for(let but of button){
+                st = but.status
+              }
+              if(st == '1'){ %>
+            <div class="">
+              <div class="col-md-12 col-sm-12  ">
+                <div class="x_panel">
+                  <div class="x_content">
+                    <div class="tab-content" >
+                      <form action="/rtc22" method="post">
+                        <div class="col-md-9" >
+                          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                          <%
+                            function genRandonString(length) {
+                               var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                               var charLength = chars.length;
+                               var result = '';
+                               for ( var i = 0; i < length; i++ ) {
+                                  result += chars.charAt(Math.floor(Math.random() * charLength));
+                               }
+                               return result;
+                            }
+                            function genString(length) {
+                               var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                               var charLength = chars.length;
+                               var result = '';
+                               for ( var i = 0; i < length; i++ ) {
+                                  result += chars.charAt(Math.floor(Math.random() * charLength));
+                               }
+                               return result;
+                            }
+                            function genSring(length) {
+                               var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                               var charLength = chars.length;
+                               var result = '';
+                               for ( var i = 0; i < length; i++ ) {
+                                  result += chars.charAt(Math.floor(Math.random() * charLength));
+                               }
+                               return result;
+                            }
+                            function gentring(length) {
+                               var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                               var charLength = chars.length;
+                               var result = '';
+                               for ( var i = 0; i < length; i++ ) {
+                                  result += chars.charAt(Math.floor(Math.random() * charLength));
+                               }
+                               return result;
+                            }
+                            function genRring(length) {
+                               var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                               var charLength = chars.length;
+                               var result = '';
+                               for ( var i = 0; i < length; i++ ) {
+                                  result += chars.charAt(Math.floor(Math.random() * charLength));
+                               }
+                               return result;
+                            }
+                            function genInteger(length) {
+                              var chars = '0123456789';
+                              var charLength = chars.length;
+                              var result = '';
+                              for ( var i = 0; i < length; i++ ) {
+                                 result += chars.charAt(Math.floor(Math.random() * charLength));
+                              }
+                              return result;
+                           }
+                            var dat = '-'
+                            var res = genRring(8)
+                            var resu = genString(4)
+                            var resul = genSring(4)
+                            var reuds = gentring(4)
+                            var resue = genRandonString(12)
+                            var log = res+dat+resu+dat+resul+dat+reuds+dat+resue
+                            recordID = genInteger(7)
+                            %>
+                         <span> <%= log %></span>
+                         <span> <%= recordID %></span>
+                        </div>
+                        <div class="col-md-3" style="display: flex;">
+                          <input type="hidden" id="indexnumber" name="indexnumber" value="<%= contribution_number %>">
+                          <input type="hidden" id="action" name="action" value="Approve_transaction">
+                          <input type="hidden" id="site_day_lot" name="site_day_lot" value="<%= site %>">
+                          <button type="submit" class="btn btn-success">Approved</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <% } } %>
+            <div class="row">
+              <div class="col-md-10 col-sm-10 ">
+                <div class="x_panel">
+                  <div class="x_title">
+                    <h3>Additional info.</h3>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                    <br />
+                    <form id="Additional" action="/rtc22" method="POST" style="color:black;font-size: 15px;" data-parsley-validate >
+                      <%
+                      let commission = totals*10
+                      let cherries = cherry+uncertified
+                      let transport_fees = cherries*10
+                      let floater_fees = floaters*10
+                      let commissions = commission+transport_fees+floater_fees
+
+                      %>
+                      <div class="item form-group">
+                        <label class="col-form-label col-md-3 col-sm-3 label-align">Commission for coffee</label>
+                        <div class="col-md-6 col-sm-6 ">
+                          <input type="hidden" id="userID" name="userID" value="<%= user %>">
+                          <input type="hidden" id="site_day_lot" name="site_day_lot" value="<%= site %>">
+                          <input type="hidden" id="day_lot" name="day_lot" value="<%= cherry_lot %>">
+                          <input type="text" id="commission_fees" name="commission_fees" class="date-picker form-control" value="<%= commission %>" required="required" >
+                        </div>
+                      </div>
+                      <div class="item form-group">
+                        <label class="col-form-label col-md-3 col-sm-3 label-align">Transport Fee (Cherries)
+                        </label>
+                        <div class="col-md-6 col-sm-6 ">
+                          <input type="hidden" id="cherries" name="cherries" value="<%= cherries %>">
+                          <input type="hidden" id="cherry_price" name="cherry_price" value="<%= price %>">
+                          <input type="text" id="transport_fees" name="transport_fees" class=" form-control" value="<%= transport_fees %>"  required="required" >
+                        </div>
+                      </div>
+                      <div class="item form-group">
+                        <label class="col-form-label col-md-3 col-sm-3 label-align">Transport Fee (Floaters)
+                        </label>
+                        <div class="col-md-6 col-sm-6 ">
+                          <input type="hidden" id="floaters" name="floaters" value="<%= floaters %>" >
+                          <input type="hidden" id="floater_price" name="floater_price" value="<%= fprice %>" >
+                          <input type="text" id="floater_transport_fee" name="floater_transport_fee" class=" form-control" value="<%= floater_fees %>" required="required" >
+                        </div>
+                      </div>
+                      <div class="item form-group">
+                        <label class="col-form-label col-md-3 col-sm-3 label-align">Total site collector payment
+                        </label>
+                        <div class="col-md-6 col-sm-6 ">
+                          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                          <input type="text" id="total_payment" name="total_payment" class=" form-control" value="<%= commissions %>" required="required" >
+                        </div>
+                      </div>
+                      <div class="ln_solid"></div>
+                      <div class="item form-group">
+                        <div class="col-md-6 col-sm-6 offset-md-3">
+                          <input type="hidden" id="action" name="action" value="Add_info">
+                         
+                          <button type="submit"  id="save_additional_info" class="btn btn-success <%= val %>">Save data</button>
+                        </div>
+                      </div>
+  
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /page content -->
+<%- include('include/footer.ejs') %>
+<script type="text/javascript">
+  setTimeout(function () {
+      // Closing the alert
+      $('#alert').alert('close');
+  }, 5000);
+</script>

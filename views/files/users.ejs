@@ -1,0 +1,166 @@
+<%- include('include/header.ejs') %>
+<%- include('include/side_menu.ejs') %>
+
+<!-- page content -->
+<div class="right_col" role="main">
+  <div class="">
+    
+    <div class="clearfix"></div>
+    <div class="row">
+      <% if(errorMessage){ %>
+        <div class="alert alert-success" style="padding: 10px; text-align: center;"> <%= errorMessage %> </div>
+        <% } %>
+      <div class="col-md-12 col-sm-12 ">
+        <div class="x_panel">
+          <div class="x_title">
+            <h2>List of Users </h2>
+            
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+            <br />
+            <table id="datatable" class="table table-bordered table-striped tbscroll" >
+              <thead>
+              <tr>
+                <th>#</th>
+                <th>Created.Time</th>
+                <th>Name</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>ACTION</th>
+              </tr>
+              </thead>
+              <tbody>
+                <% if (user.length > 0){ 
+                  let n = 1;
+                  for (let users of user){ 
+                    var now     = users.created_at; 
+                    var year    = now.getFullYear();
+                    var month   = now.getMonth()+1; 
+                    var day     = now.getDate();
+                    var hour    = now.getHours();
+                    var minute  = now.getMinutes();
+                    var second  = now.getSeconds(); 
+                    if(month.toString().length == 1) {month = '0'+month;}
+                    if(day.toString().length == 1) {day = '0'+day;}   
+                    if(hour.toString().length == 1) {hour = '0'+hour;}
+                    if(minute.toString().length == 1) {minute = '0'+minute;}
+                    if(second.toString().length == 1) {second = '0'+second;}   
+                    var dateTime = year+'-'+month+'-'+day+' '+hour+':'+minute+':'+second;
+                    if(users.status == '0'){
+                      status = 1;
+                      value = 'fa-toggle-off';
+                      str = 'OFF';
+                      btn = 'btn-outline-secondary'
+                    }else{
+                      status = 0;
+                      value = 'fa-toggle-on';
+                      str = 'ON';
+                      btn = 'btn-outline-success'
+                    }
+                  %>
+                <tr>
+                  <td><%= n %> </td>
+                  <td><%= dateTime %> </td>
+                  <td><%= users.Name %> </td>
+                  <td><%= users.Name_User %></td>
+                  <td><%= users.Email %></td>
+                  <td><%= users.Role %></td>
+                  <td >
+                    <a  class="btn btn-secondary btn-sm" href="#" data-toggle="modal" data-target="#modal-default<%= users.id %>">
+                      <i class="fa fa-key"></i>
+                     </a>
+                     
+                    <div class="modal fade" id="modal-default<%= users.id %>">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h4 class="modal-title">Edit User Password</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <!-- General Form Elements -->
+                            <form action="/edit_user_password" method="POST">
+                              <div class="row mb-3">
+                                <div class="col-sm-12">
+                                  <input type="text" class="form-control" value="<%= users.Name %>" disabled>
+                                </div>
+                              </div>
+                              <div class="row mb-3">
+                                <div class="col-sm-12">
+                                  <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                                  <input type="text" name="userName" class="form-control" value="<%= users.Name_User %>" disabled>
+                                </div>
+                              </div>
+                              <div class="row mb-3">
+                                <div class="col-sm-12">
+                                  <input type="email" name="email" class="form-control" value="<%= users.Email %>" disabled>
+                                </div>
+                              </div>
+                              <div class="row mb-3">
+                                <div class="col-sm-12">
+                                  <input type="password" name="newPassword" class="form-control" placeholder=" Password">
+                                </div>
+                              </div>
+                              <div class="row mb-3">
+                                <div class="col-sm-12">
+                                  <input type="password" name="confirmPassword" class="form-control" placeholder=" Confirm Password">
+                                  <input type="hidden" name="kp_user" class="form-control" value="<%= users.__kp_User %>">
+                                  <input type="hidden" name="kp_userid" class="form-control" value="<%= users.id %>">
+                                </div>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="submit" class="btn btn-success">Save changes</button>
+                              </div>
+                            </form><!-- End General Form Elements -->
+                          </div>
+                        </div>
+                        <!-- /.modal-content -->
+                      </div>
+                      <!-- /.modal-dialog -->
+                    </div>
+
+
+                    <form action="/phone_modules" method="POST" style="margin-left: 35px; margin-top: -35px;">
+                      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                      <input type="hidden" name="kp_userid" class="form-control" value="<%= users.id %>">
+                      <button type="submit" class="btn btn-info btn-sm" >
+                        <i class="fa fa-phone"></i>
+                      </button>
+                    </form>
+                    
+                    <form action="/computer_modules" method="POST" style="margin-left: 70px; margin-top: -36px;">
+                      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                      <input type="hidden" name="kp_userid" class="form-control" value="<%= users.id %>">
+                      <button type="submit" class="btn btn-dark btn-sm ">
+                        <i class="fa fa-desktop"></i>
+                      </button>
+                    </form>
+
+                    <a class="btn <%= btn %> btn-sm " href="/userAccess/<%= users.id %>/<%= status %>"style="margin-left: 110px; margin-top: -60px;">
+                      <span class="fa <%= value %>"> <%= str %></span> 
+                    </a>
+                  </td>
+                </tr>
+                <% n++;}}else{ %>
+                <tr>
+                  <td colspan="5"> No Data</td>
+                </tr>
+                <% } %>
+              </tbody>
+             
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+  </div>
+</div>
+<!-- /page content -->
+
+<%- include('include/footer.ejs') %>

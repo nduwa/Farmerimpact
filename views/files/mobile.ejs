@@ -1,0 +1,115 @@
+<%- include('include/header.ejs') %>
+<style>
+    .top{
+        display: flex; 
+        margin: 6px; 
+        margin-left: 15%;
+        font-weight: bold;
+        font-size: 16px;
+    }
+    .top a{
+        color: rgb(0, 88, 46);
+    }
+    .top a:hover{
+        color: black;
+    }
+    .top span{
+        font-size: large;
+        margin-top: 10px;
+    }
+</style>
+<%- include('include/side_menu.ejs') %>
+
+  <!-- page content -->
+  <div class="right_col" role="main">
+    <div class="">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="top">
+            <a href="/rtc12" style="margin-left: 50px;">
+                <span class="fa fa-home"></span>  List All Users</a>
+            <a href="#" style="margin-left: 50px;">
+                <span class="fa fa-phone"></span>  Mobile Menus</a>
+            <a href="#" style="margin-left: 50px;">
+                <span class="fa fa-book"></span>  Web Console Modules</a>
+          </div>
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+      <hr>
+      <div class="page-title">
+        <div class="">
+          <h5>Mobile Access Control for "<%= user.Name_Full %>"</h5>
+        </div>
+
+        <div class="title_right">
+          
+        </div>
+      </div>
+      <div class="clearfix"></div>
+      <div class="row">
+        <div class="col-md-12 col-sm-12 ">
+          <div class="x_panel">
+            
+            <div class="x_content">
+              <br />
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <tr>
+                      <th scope="col" style="width: 40px;">#</th>
+                      <th scope="col">Access Control</th>
+                      <th scope="col">Asigned</th>
+                    </tr>
+                  </tr>
+                </thead>
+                <tbody>
+                  
+                  <%
+                  if(mobile.length > 0){
+                  let index = 0
+                  let check = 0
+                  for(let mobiles of mobile){
+                  %>
+                   
+                  <form action="/mobile_control" method="POST">
+                      <tr>
+                          <th scope="row">
+                            <input type="checkbox"  name="mobile_id"  value="<%= mobiles.id %>"> 
+                            <input type="hidden" name="user_ID"  value="<%= user.id %>">
+                            <input type="hidden" name="index_data"  value="<%= index %>">
+                          </th>
+                          <td><%= mobiles.module_name %></td>
+                          <td>
+                            <% for(let module of module_access){
+                              modo = module.moduleid 
+                              if(modo == mobiles.id){%>
+                                <i class="fa fa-check-square"></i>
+                            <% }} %>
+                          </td>
+                      </tr>
+                      <% index++ } %>
+                      <tr>
+                          <td colspan="2">
+                              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                              <button type="submit" class="btn btn-sm btn-success "> <span class="ri-save-3-line"></span> Save Access Control</button>
+                          </td>
+                      </tr>
+                  </form>
+                <% }else{ %>
+                  <tr>
+                    <td colspan="3"> No Data</td>
+                  </tr>
+                  <% } %>
+              </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      
+    </div>
+  </div>
+  <!-- /page content -->
+
+<%- include('include/footer.ejs') %>

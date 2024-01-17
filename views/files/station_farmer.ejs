@@ -1,0 +1,100 @@
+<%- include('include/header.ejs') %>
+<%- include('include/top_menu.ejs') %>
+<%- include('include/side_menu.ejs') %>
+
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  &nbsp;
+  
+    
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+
+          <div class="card">
+            <div class="card-header">
+                <form action="" method="post" style="display: flex;">
+                    <div class="col-md-3">
+                        <label for="">Station</label>
+                        <select name="" id="" class="form-control">
+                            <option value="" selected disabled>SELECT STATION</option>
+                            <% for(stations of station){ %>
+                            <option value=""><%= stations.Name %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="">&nbsp;</label><br>
+                        <button class="btn-secondary btn-sm"> Find</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                
+              <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Registered AT</th>
+                  <th>Farmer ID</th>
+                  <th>Name</th>
+                  <th>Gender</th>
+                  <th>DOB</th>
+                  <th>National ID</th>
+                  <th>GROUP</th>
+                  <th>STATION</th>
+                  <th>REGISTERED BY</th>
+                </tr>
+                </thead>
+                <tbody>
+                  <% if (farmers.length > 0){ 
+                    let n = 1
+                    for (let farmer of farmers){ 
+                      let d = farmer.created_at;
+                      var datestring = ("0" + d.getDate()).slice(-2) + "-" + 
+                      ("0"+(d.getMonth()+1)).slice(-2) + "-" + d.getFullYear() + " " + 
+                      ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+                  %>
+                      
+                  <tr>
+                    <td><%= n %> </td>
+                    <td><%= datestring %></td>
+                    <td><%= farmer.farmerid %> </td>
+                    <td><%= farmer.fname %></td>
+                    <td><%= farmer.Gender %></td>
+                    <td><%= farmer.Year_Birth %></td>
+                    <td><%= farmer.National_ID_t %></td>
+                    <td><%= farmer.ID_GROUP %></td>
+                    <td><%= farmer.sname %></td>
+                    <td><%= farmer.created_by %></td>
+                    
+                  </tr>
+                  <% n++;}}else{ %>
+                  <tr>
+                    <td colspan="5"> No Data</td>
+                  </tr>
+                  <% } %>
+                </tbody>
+               
+              </table>
+            </div>
+            <!-- /.card-body -->
+          </div>
+          <!-- /.card -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+    </div>
+    <!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+
+<%- include('include/footer.ejs') %>

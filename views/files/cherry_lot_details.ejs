@@ -1,0 +1,185 @@
+<%- include('include/header.ejs') %>
+<%- include('include/side_menu.ejs') %>
+<!-- page content -->
+<div class="right_col" role="main">
+  <div class="container-fluid"></div>
+  <div class="">
+    <div class="row">
+      <div class="col-md-6">
+        <h5>Coffee Purchases / cherry lot details</h5>
+      </div>
+      <div class="col-md-6">
+        <p class="pull-right">
+          <a href="/rtc11">Dashboard</a> / cherry lot
+        </p>
+      </div>
+    </div>
+    <hr>
+    
+    <% if(errorMessage){ %>
+      <div id="alert" class="alert alert-success" >
+        <h5><%= errorMessage %> </h5>
+      </div>
+    <% }  %>
+    
+    <div class="clearfix"></div>
+    <h3>Cherry lot summary</h3>
+    
+    <div class="row">
+      <div class="col-md-12 col-sm-12  ">
+        <div class="panel">
+          <div class="col-md-6 col-sm-6  ">
+            <div class="x_panel">
+              <div class="x_title">
+                <h2><i class="fa fa-bars"></i> Vertical Tabs <small>Float left</small></h2>
+                <%
+                  let cert = 0
+                  let uncert = 0
+                  let user = ''
+                  let site = ''
+                  let count = 0
+                  let cherries = 0
+                  let contr = 0
+                  let nFormat = new Intl.NumberFormat();
+                if(data.length > 0){
+                  count = data.length;
+                  for(res of data){
+                    cert = res.certification
+                    user = res.userID
+                    site = res.site_day_lot
+                    cherry_lot = res.cherry_lot_id 
+                    datas = res.contribution
+                    price = res.unitprice
+                    kilo = res.kilo
+                    contr +=datas
+                    cherries +=kilo
+                  }
+
+                }
+
+                let now = new Date(res.transaction_date);
+                var year    = now.getFullYear();
+
+                var month   = now.getMonth()+1; 
+                var day     = now.getDate();
+                if(month.toString().length == 1) {
+                    month = '0'+month;
+                }
+                if(day.toString().length == 1) {
+                    day = '0'+day;
+                }     
+                let formattedDate = now.toLocaleString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true });
+                let transaction = new Date(res.transaction_date);
+                let trans_date  = transaction.toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric'});
+                
+              
+                %>
+                <div class="clearfix"></div>
+              </div>
+              <div class="x_content">
+                <table class="table table-bordered col-md-10 col-sm-10" >
+                  <thead>
+                    <tr><th>Cherry Lot ID</th><th><%= cherry_lot %></th></tr>
+                    <tr><th>Certification(s)</th><th><%= cert %></th></tr>
+                    <tr><th>Lot Creation Date</th><th><%= trans_date %></th></tr>
+                    <tr><th>Number of contributing site collectors</th><th><%= count %></th></tr>
+                    <tr><th>Number of contributing farmers</th><th><%= contr %></th></tr>
+                    <tr><th>Avg Farmer Price per Kg Cherry</th><th><%= price %> Frw</th></tr>
+                    <tr><th>Total Kgs Cherry Bought</th><th><%= nFormat.format(cherries) %> Kgs</th></tr>
+                    <tr><th>Avg Transport Fee per Kg Cherry</th><th>10 Frw</th></tr>
+                    <tr><th>Avg Transport Fee per Kg Floater</th><th>10 Frw</th></tr>
+                    <tr><th>Avg Commission Fee per Kg Cherry</th><th>10 Frw</th></tr>
+                  </thead>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 col-sm-12  ">
+            <div class="x_panel">
+              <div class="x_content">
+                <table class="table table-bordered jambo_table bulk_action col-md-12 col-sm-12">
+                  <thead>
+                    <tr class="headings">
+                      <th>CWS Name</th>
+                      <th>Site Collector Name</th>
+                      <th>Site Collector ID</th>
+                      <th>SC Daily Journal ID</th>
+                      <th>Total KG Contributed</th>
+                      <th>Number of farmers who contributed</th>
+                      <th>Farmer Price per KG</th>
+                      <th>Total Farmer Payment</th>
+                      <th>SCDJ Status</th>
+                      <th>SCDJ Photo</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <%
+                    if(data.length > 0){
+                      for(res of data){
+                        if(res.approved == 0){
+                          values = 'Pending...';
+                          btns = 'btn-primary';
+                        }else{
+                          values = 'Approved';
+                          btns = 'btn-success'
+                        }
+                        if(res.paper_receipt_image_uploaded == 0){
+                          valus = 'No Photos';
+                          bts = 'btn-danger';
+                        }else{
+                          valus = 'Photo Uploaded';
+                          bts = 'btn-success'
+                        }
+                        if(res.closed_by == 0){
+                          bt = 'btn-success';
+                        }else{
+                          bt = 'btn-dark'
+                        }
+                    %>
+                    <tr>
+                      <td><%= res.station_name %></td>
+                      <td><%= res.Name %></td>
+                      <td><%= res.userID %></td>
+                      <td><%= res.site_day_lot %></td>
+                      <td><%= nFormat.format(res.kilo) %></td>
+                      <td><%= res.contribution %></td>
+                      <td><%= res.unitprice %></td>
+                      <td><%= nFormat.format(res.cash) %></td>
+                      <td style="color:#fff">
+                        <a class="btn <%=btns%> btn-sm " >
+                          <span > <%=values%></span> 
+                        </a>
+                      </td>
+                      <td style="color:#fff">
+                        <a class="btn <%=bts%> btn-sm " >
+                          <span > <%=valus%></span> 
+                        </a>
+                      </td>
+                    </tr>
+                    <%
+                    }
+                    %>
+                    <tr>
+                      <td colspan="10" style="text-align: right;">
+                        <a href="/rtc23?CloseAndSubmit=<%=res.cherry_lot_id%>&&action=close_lot" class="btn <%=bt%> btn-lg">Close & Submit to RTC</a>
+                      </td>
+                    </tr>
+                    <%
+                    }else{
+                    %>
+                    <tr>
+                      <td colspan="11">No data!</td>
+                    </tr>
+                    <% } %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /page content -->
+<%- include('include/footer.ejs') %>

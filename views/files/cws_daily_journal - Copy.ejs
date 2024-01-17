@@ -1,0 +1,613 @@
+<%- include('include/header.ejs') %>
+<%- include('include/side_menu.ejs') %>
+<!-- page content -->
+<div class="right_col" role="main">
+  <div class="container-fluid"></div>
+  <div class="">
+    <div class="row">
+      <div class="col-md-6">
+        <h5>Coffee Purchases / CWS Daily journal Listing</h5>
+      </div>
+      <div class="col-md-6">
+        <p class="pull-right">
+          <a href="/rtc11">Dashboard</a> / Daily Journal
+        </p>
+      </div>
+    </div>
+    <hr>
+    <% 
+        let nFormat = new Intl.NumberFormat();
+        var now     = new Date(); 
+        var year    = now.getFullYear();
+        var month   = now.getMonth()+1; 
+        var day     = now.getDate();
+        var hour    = now.getHours();
+        var minute  = now.getMinutes();
+        var second  = now.getSeconds(); 
+        if(month.toString().length == 1) {month = '0'+month;}
+        if(day.toString().length == 1) {day = '0'+day;}   
+        if(hour.toString().length == 1) {hour = '0'+hour;}
+        if(minute.toString().length == 1) {minute = '0'+minute;}
+        if(second.toString().length == 1) {second = '0'+second;}   
+        var dateTime = year+'-'+month+'-'+day;
+     
+      %>
+      <form action="/search_cws_details" method="GET" id="search_site_collector" >
+        <div class="row" style="padding: 5px;display: flex;">
+          <div class="col-md-6">
+            <label for="site-colector">Search by site collector' name</label>
+            <input type="text" id="site_collector"  class="form-control input-form" placeholder="Search by site collector' name" autocomplete="off">
+          </div>
+          <div class="col-md-3">
+            <label for="site-colector">From</label>
+            <input type="date"width="100%" id="date_from" value="<%= dateTime %>" class="form-control input-form" >
+          </div>
+          <div class="col-md-3">
+            <label for="site-colector">To</label>
+            <input type="date" width="100%" id="date_to" value="<%= dateTime %>" class="form-control input-form" >
+          </div>
+        </div>
+      </form>
+    <br>
+    <div class="row">
+      <div class="col-md-6 col-sm-6  ">
+        <div class="x_panel">
+          <div class="x_content">
+            <table class="table table-striped bulk_action">
+              <thead>
+                <%
+                  let sum = 0;
+                  let cert = 0;
+                  let uncert = 0;
+                  let float = 0;
+                  if(data.length > 0){
+                    for(cws of data){
+                      sum = (cws.kilograms);
+
+                      if(cws.certified == 1){ cert = cws.kilo;}
+                      if(cws.certified == 0){ uncert = cws.kilo;}
+                      float = cws.floater;
+                      
+                    }
+                    
+                  }
+                %>
+                <tr class="headings">
+                  <th class="column-title">	TOTAL CHERRY PURCHASES (KG)</th>
+                  <th class="column-title"><%= nFormat.format(sum) %> KG</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Certified Cherries</td>
+                  <td><%= nFormat.format(cert) %> KG</td>
+                </tr>
+                <tr>
+                  <td>UnCertified Cherries</td>
+                  <td><%= nFormat.format(uncert) %> KG</td>
+                </tr>
+                <tr>
+                  <td>Floaters</td>
+                  <td><%= nFormat.format(float) %> KG</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-sm-6  ">
+        <div class="x_panel">
+          <div class="x_content">
+            <table class="table table-striped bulk_action">
+              <thead>
+                <tr class="headings">
+                  <th class="column-title">	PROJECTED PARCHMENT (KG)</th>
+                  <th class="column-title">9,923,066 Kg </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Certified</td>
+                  <td>9,923,066 Kg</td>
+                </tr>
+                <tr>
+                  <td>Certified</td>
+                  <td>9,923,066 Kg</td>
+                </tr>
+                <tr>
+                  <td>Certified</td>
+                  <td>9,923,066 Kg</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="row">
+      <div class="x_panel">
+        <div class="x_title">
+          
+          <div class="clearfix"></div>
+        </div>
+        <div class="x_content">
+          <table class="table table-bordered bulk_action" style="text-align: center;">
+            <thead>
+              <tr class="headings">
+                <th class="column-title">PREVIOUS APPROVED PRICE </th>
+                <th class="column-title">	LATEST APPROVED PRICE</th>
+                <th class="column-title">CURRENT PURCHASE PRICE FROM THE FARMER </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>RWF 700</td>
+                <td>RWF 700</td>
+                <td>Good Cherry 600 RWF  Floaters 0 RWF</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="row">
+      <div class="col-md-12 col-sm-12  ">
+        <div class="x_panel">
+          
+          <div class="x_content">
+            <div class="table-responsive">
+              <table class="table table-bordered jambo_table bulk_action">
+                <thead>
+                  <tr class="headings">
+                    <th colspan="4"> </th>
+                    <th colspan="2">CERTIFIED </th>
+                    <th colspan="2">UNCERTIFIED </th>
+                    <th colspan="3">BUCKET COUNT </th>
+                    <th colspan="3">SKIN DRYING GRADE WEIGHTING </th>
+                    <th class="column-title"> </th>
+                  </tr>
+                  <tr class="headings">
+                    <th class="column-title">CWS.NAME</th>
+                    <th class="column-title">STATUS </th>
+                    <th class="column-title">PURCHASE.DATE </th>
+                    <th class="column-title">	CHERRY.LOT.ID </th>
+                    <th class="column-title">KG </th>
+                    <th class="column-title">PX </th>
+                    <th class="column-title">KG </th>
+                    <th class="column-title">PX </th>
+                    <th class="column-title">GRADE.A </th>
+                    <th class="column-title">GRADE.B </th>
+                    <th class="column-title">GRADE.C </th>
+                    <th class="column-title">GRADE.A </th>
+                    <th class="column-title">GRADE.B </th>
+                    <th class="column-title">GRADE.C </th>
+                    <th class="column-title">FARMERS </th>
+                  </tr>
+                </thead>
+                
+                <tbody id="results">
+                  
+                </tbody>
+              </table>
+            </div>
+      
+    
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+  </div>
+</div>
+<!-- /page content -->
+
+<%- include('include/footer.ejs') %>
+<script type="text/javascript">
+  const searchInput = document.querySelector('#search_site_collector');
+  const site_collector = document.querySelector('#site_collector');
+  const searchDateFrom = document.querySelector('#date_from');
+  const searchDateTo = document.querySelector('#date_to');
+  const results_body = document.querySelector('#results');
+  
+  load_sc_data();
+  
+  function load_sc_data(search= '',from = '',to ='') {
+    const request = new XMLHttpRequest();
+    request.open('GET',`/search_cws_details?search=${search}&&from=${from}&&to=${to}`);
+    request.onload = () =>{
+      const results = JSON.parse(request.responseText);
+
+      let html ='';
+      let flag ='';
+      let cert = '';
+      let uncert = '';
+      let price = '';
+      let fprice = '';
+      if(results.length > 0){
+        results.forEach(result => {
+          flag = result.paper_receipt;
+          btn = 'btn-success';
+          val = 'fa-plus';
+          vals = 'fa-users';
+          if(result.fm_approval == 0){
+            values = 'Open';
+            btns = 'btn-danger';
+          }else{
+            values = 'Closed';
+            btns = 'btn-success'
+          }
+          if(result.certified == 1){cert = result.kilo;price=result.unitprice;}else{cert = '';price='';}
+          if(result.certified == 0){uncert = result.kilo;fprice=result.unitprice}else{uncert = '';fprice='';}
+          
+          html += `
+          <tr class="even pointer">
+                <td >`+result.Name+`</td>
+                <td style="color:#fff"><a class="btn `+btns+` btn-sm"><span>`+values+`</span></a></td>
+                <td >`+result.transaction_date+`</td> 
+                <td><a href="/rtc22?SCID=`+result.cherry_lot_id+`">`+result.cherry_lot_id+`</a></td>
+                <td>`+cert+`</td> 
+                <td>`+price+`</td>
+                <td>`+uncert+`</td>
+                <td>`+fprice+`</td>
+                <td style="color:#fff"><a data-toggle="modal" data-target=".bs-example-modal-backet`+result.cherry_lot_id+`" style="border-radius:20px;" class="btn `+btn+`"><span class="fa `+val+`"> </span></a></td>
+                <td style="color:#fff"><a data-toggle="modal" data-target=".bs-example-modal-backet`+result.cherry_lot_id+`" style="border-radius:20px;"class="btn `+btn+`"><span class="fa `+val+`"> </span></a></td>
+                <td style="color:#fff"><a data-toggle="modal" data-target=".bs-example-modal-backet`+result.cherry_lot_id+`" style="border-radius:20px;"class="btn `+btn+`"><span class="fa `+val+`"> </span></a></td>
+
+                <!-- Large modal -->
+                <div class="modal fade bs-example-modal-backet`+result.cherry_lot_id+`" tabindex="-1" role="dialog" aria-hidden="true">
+                  <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+
+                      <div class="modal-header">
+                        <h1 class="modal-title" id="myModalLabel">Bucketing Info.</h1>
+                        <button type="button" style="background-color: rgb(5, 33, 56); border-radius:40px" class="close" data-dismiss="modal">
+                          <span aria-hidden="true"style="color:#fff">×</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <form action="/rtc22" method="POST" style="font-size: 15px; text-align: center;">
+                          <div class="form-group row">
+                            <label class="col-form-label col-md-5 col-sm-5 ">BUCKET A</label>
+                            <div class="col-md-6 col-sm-6 ">
+                              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                              <input type="text" id="bucket_a" name="bucket_a" class="form-control">
+                              <input type="text" id="day_lot" name="day_lot" class="form-control" value="`+result.cherry_lot_id+`">
+                              <input type="text" id="certified" name="certified" class="form-control" value="`+result.certified+`">
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-form-label col-md-5 col-sm-5 ">BUCKET B</label>
+                            <div class="col-md-6 col-sm-6 ">
+                              <input type="text" id="bucket_b" name="bucket_b" class="form-control">
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-form-label col-md-5 col-sm-5 ">BUCKET C</label>
+                            <div class="col-md-6 col-sm-6 ">
+                              <input type="text" id="bucket_c" name="bucket_c" class="form-control">
+                            </div>
+                          </div>
+                          
+                          <div class="ln_solid"></div>
+                          <div class="form-group row pull-right">
+                            <div class="offset-md-12 col-md-12 col-sm-12">
+                              <input type="hidden" id="action" name="action" value="save_buket">
+                              <input type="submit" class="btn btn-success" value="Save Bucket">
+                            </div>
+                          </div>
+
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Large modal -->
+
+                <td style="color:#fff"><a data-toggle="modal" data-target=".bs-example-modal-backet_weight`+result.cherry_lot_id+`" style="border-radius:20px;"class="btn `+btn+`"><span class="fa `+val+`"> </span></a></td>
+                <td style="color:#fff"><a data-toggle="modal" data-target=".bs-example-modal-backet_weight`+result.cherry_lot_id+`" style="border-radius:20px;"class="btn `+btn+`"><span class="fa `+val+`"> </span></a></td>
+                <td style="color:#fff"><a data-toggle="modal" data-target=".bs-example-modal-backet_weight`+result.cherry_lot_id+`" style="border-radius:20px;"class="btn `+btn+`"><span class="fa `+val+`"> </span></a></td>
+
+                <!-- Large modal -->
+                <div class="modal fade bs-example-modal-backet_weight`+result.cherry_lot_id+`" tabindex="-1" role="dialog" aria-hidden="true">
+                  <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+
+                      <div class="modal-header">
+                        <h1 class="modal-title" id="myModalLabel">Wet Parchment Weight.</h1>
+                        <button type="button" style="background-color: rgb(5, 33, 56); border-radius:40px" class="close" data-dismiss="modal">
+                          <span aria-hidden="true"style="color:#fff">×</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <form action="/rtc22" method="POST" id="Edit_transaction" class="form-label-left" style="font-size: 15px; text-align: center;">
+                          <div class="form-group row">
+                            <label class="col-form-label col-md-5 col-sm-5"style="text-align:right">GRADE A</label>
+                            <div class="col-md-6 col-sm-6 ">
+                              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                              <input type="text" id="grade_a" name="grade_a" class="form-control">
+                              <input type="hidden" id="site_day_lot" name="site_day_lot" class="form-control" value="`+result.cherry_lot_id+`">
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-form-label col-md-5 col-sm-5"style="text-align:right">GRADE A WEIGHT TAKEN</label>
+                            <div class="col-md-6 col-sm-6 ">
+                              <input type="radio" name="_csrf" value="<%=  %>">
+                              <label class="col-form-label  ">BEFORE SKIN DRYING</label><br>
+                              <input type="radio" id="grade_a" name="grade_a" >
+                              <label class="col-form-label  ">AFTER SKIN DRYING</label>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-form-label col-md-5 col-sm-5" style="text-align:right">GRADE B</label>
+                            <div class="col-md-6 col-sm-6 ">
+                              <input type="text" id="grade_c" name="grade_b" class="form-control">
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-form-label col-md-5 col-sm-5" style="text-align:right">GRADE B WEIGHT TAKEN</label>
+                            <div class="col-md-6 col-sm-6 ">
+                              <input type="radio" name="_csrf" value="<%=  %>">
+                              <label class="col-form-label  ">BEFORE SKIN DRYING</label><br>
+                              <input type="radio" id="grade_a" name="grade_a" >
+                              <label class="col-form-label  ">AFTER SKIN DRYING</label>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-form-label col-md-5 col-sm-5"style="text-align:right">GRADE C</label>
+                            <div class="col-md-6 col-sm-6 ">
+                              <input type="text" id="grade_c" name="grade_c" class="form-control">
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-form-label col-md-5 col-sm-5"style="text-align:right">GRADE C WEIGHT TAKEN</label>
+                            <div class="col-md-6 col-sm-6 ">
+                              <input type="radio" name="_csrf" value="<%=  %>">
+                              <label class="col-form-label  ">BEFORE SKIN DRYING</label><br>
+                              <input type="radio" id="grade_a" name="grade_a" >
+                              <label class="col-form-label  ">AFTER SKIN DRYING</label>
+                            </div>
+                          </div>
+                          <div class="ln_solid"></div>
+                          <div class="form-group row pull-right">
+                            <div class="offset-md-12 col-md-12 col-sm-12">
+                              <input type="hidden" id="action" name="action" value="save_Transaction">
+                              <button  type="submit" id="save_edit_transaction"  name="save_edit_transaction" class="btn btn-success">Save Grade</button>
+                            </div>
+                          </div>
+
+                        </form>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+                <!-- Large modal -->
+
+                <td style="color:#fff"><a style="border-radius:20px;"class="btn `+btn+`"><span class="fa `+vals+`"> </span></a></td>
+              </tr>
+          `;
+          if(result.bad_kilograms != 0){
+            kilo = result.bad_kilograms
+            bad = result.bad_unit_price
+            html += `
+            <tr class="even pointer">
+                <td >`+result.Name+`</td>
+                <td style="color:#fff"><a class="btn `+btns+` btn-sm"><span>`+values+`</span></a></td>
+                <td >`+result.transaction_date+`</td> 
+                <td><a href="/rtc22?SCID=`+result.bad_cherry_lot_id+`">`+result.bad_cherry_lot_id+`</a></td>
+                <td></td> 
+                <td></td>
+                <td>`+result.floater+`</td>
+                <td>`+bad+`</td>
+                <td style="color:#fff"><a data-toggle="modal" data-target=".bs-example-modal-backet`+result.bad_cherry_lot_id+`" style="border-radius:20px;" class="btn `+btn+`"><span class="fa `+val+`"> </span></a></td>
+                <td style="color:#fff"><a data-toggle="modal" data-target=".bs-example-modal-backet`+result.bad_cherry_lot_id+`" style="border-radius:20px;"class="btn `+btn+`"><span class="fa `+val+`"> </span></a></td>
+                <td style="color:#fff"><a href="?lot=`+result.bad_cherry_lot_id+`" data-toggle="modal" data-target=".bs-example-modal-backet" style="border-radius:20px;"class="btn `+btn+`"><span class="fa `+val+`"> </span></a></td>
+
+                <!-- Large modal -->
+                <div class="modal fade bs-example-modal-backet`+result.bad_cherry_lot_id+`" tabindex="-1" role="dialog" aria-hidden="true">
+                  <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+
+                      <div class="modal-header">
+                        <h1 class="modal-title" id="myModalLabel">Bucketing Info.</h1>
+                        <button type="button" style="background-color: rgb(5, 33, 56); border-radius:40px" class="close" data-dismiss="modal">
+                          <span aria-hidden="true"style="color:#fff">×</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <form action="/rtc22" method="POST" id="Edit_transaction" class="form-label-left" style="font-size: 15px; text-align: center;">
+                          <div class="form-group row">
+                            <label class="col-form-label col-md-5 col-sm-5 ">BUCKET A</label>
+                            <div class="col-md-6 col-sm-6 ">
+                              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                              <input type="text" id="bucket_a" name="bucket_a" class="form-control">
+                              <input type="hidden" id="site_day_lot" name="site_day_lot" class="form-control" value="`+result.cherry_lot_id+`">
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-form-label col-md-5 col-sm-5 ">BUCKET B</label>
+                            <div class="col-md-6 col-sm-6 ">
+                              <input type="text" id="bucket_b" name="bucket_b" class="form-control">
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-form-label col-md-5 col-sm-5 ">BUCKET C</label>
+                            <div class="col-md-6 col-sm-6 ">
+                              <input type="text" id="bucket_c" name="bucket_c" class="form-control">
+                            </div>
+                          </div>
+                          
+                          <div class="ln_solid"></div>
+                          <div class="form-group row pull-right">
+                            <div class="offset-md-12 col-md-12 col-sm-12">
+                              <input type="hidden" id="action" name="action" value="save_Transaction">
+                              <button  type="submit" id="save_edit_transaction"  name="save_edit_transaction" class="btn btn-success">Save Bucket</button>
+                            </div>
+                          </div>
+
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Large modal -->
+
+                <td style="color:#fff"><a data-toggle="modal" data-target=".bs-example-modal-backet_weight`+result.bad_cherry_lot_id+`" style="border-radius:20px;"class="btn `+btn+`"><span class="fa `+val+`"> </span></a></td>
+                <td style="color:#fff"><a data-toggle="modal" data-target=".bs-example-modal-backet_weight`+result.bad_cherry_lot_id+`" style="border-radius:20px;"class="btn `+btn+`"><span class="fa `+val+`"> </span></a></td>
+                <td style="color:#fff"><a data-toggle="modal" data-target=".bs-example-modal-backet_weight`+result.bad_cherry_lot_id+`" style="border-radius:20px;"class="btn `+btn+`"><span class="fa `+val+`"> </span></a></td>
+
+                <!-- Large modal -->
+                <div class="modal fade bs-example-modal-backet_weight`+result.bad_cherry_lot_id+`" tabindex="-1" role="dialog" aria-hidden="true">
+                  <div class="modal-dialog modal-md">
+                    <div class="modal-content">
+
+                      <div class="modal-header">
+                        <h1 class="modal-title" id="myModalLabel">Wet Parchment Weight.</h1>
+                        <button type="button" style="background-color: rgb(5, 33, 56); border-radius:40px" class="close" data-dismiss="modal">
+                          <span aria-hidden="true"style="color:#fff">×</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <form action="/rtc22" method="POST" id="Edit_transaction" class="form-label-left" style="font-size: 15px; text-align: center;">
+                          <div class="form-group row">
+                            <label class="col-form-label col-md-5 col-sm-5"style="text-align:right">GRADE A</label>
+                            <div class="col-md-6 col-sm-6 ">
+                              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                              <input type="text" id="grade_a" name="grade_a" class="form-control">
+                              <input type="hidden" id="site_day_lot" name="site_day_lot" class="form-control" value="`+result.cherry_lot_id+`">
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-form-label col-md-5 col-sm-5"style="text-align:right">GRADE A WEIGHT TAKEN</label>
+                            <div class="col-md-6 col-sm-6 ">
+                              <input type="radio" name="_csrf" value="<%=  %>">
+                              <label class="col-form-label  ">BEFORE SKIN DRYING</label><br>
+                              <input type="radio" id="grade_a" name="grade_a" >
+                              <label class="col-form-label  ">AFTER SKIN DRYING</label>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-form-label col-md-5 col-sm-5" style="text-align:right">GRADE B</label>
+                            <div class="col-md-6 col-sm-6 ">
+                              <input type="text" id="grade_c" name="grade_b" class="form-control">
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-form-label col-md-5 col-sm-5" style="text-align:right">GRADE B WEIGHT TAKEN</label>
+                            <div class="col-md-6 col-sm-6 ">
+                              <input type="radio" name="_csrf" value="<%=  %>">
+                              <label class="col-form-label  ">BEFORE SKIN DRYING</label><br>
+                              <input type="radio" id="grade_a" name="grade_a" >
+                              <label class="col-form-label  ">AFTER SKIN DRYING</label>
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-form-label col-md-5 col-sm-5"style="text-align:right">GRADE C</label>
+                            <div class="col-md-6 col-sm-6 ">
+                              <input type="text" id="grade_c" name="grade_c" class="form-control">
+                            </div>
+                          </div>
+                          <div class="form-group row">
+                            <label class="col-form-label col-md-5 col-sm-5"style="text-align:right">GRADE C WEIGHT TAKEN</label>
+                            <div class="col-md-6 col-sm-6 ">
+                              <input type="radio" name="_csrf" value="<%=  %>">
+                              <label class="col-form-label  ">BEFORE SKIN DRYING</label><br>
+                              <input type="radio" id="grade_a" name="grade_a" >
+                              <label class="col-form-label  ">AFTER SKIN DRYING</label>
+                            </div>
+                          </div>
+                          <div class="ln_solid"></div>
+                          <div class="form-group row pull-right">
+                            <div class="offset-md-12 col-md-12 col-sm-12">
+                              <input type="hidden" id="action" name="action" value="save_Transaction">
+                              <button  type="submit" id="save_edit_transaction"  name="save_edit_transaction" class="btn btn-success">Save Grade</button>
+                            </div>
+                          </div>
+
+                        </form>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+                <!-- Large modal -->
+
+                <td style="color:#fff"><a style="border-radius:20px;"class="btn `+btn+`"><span class="fa `+vals+`"> </span></a></td>
+              </tr>
+          `;
+          }
+        });
+      }else{
+        html +=`
+          <tr>
+            <td colspan="11"> No Data</td>
+          </tr>
+        `;
+      }
+      results_body.innerHTML = html;
+    };
+    request.send();
+  }
+  searchInput.addEventListener('input',() =>{
+    const search = site_collector.value;
+    const from = searchDateFrom.value;
+    const to = searchDateTo.value;
+    load_sc_data(search,from,to);
+  });
+</script> 
+
+<!-- Large modal -->
+<div class="modal fade bs-example-modal-backet" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <% let lot =''
+      if(lot == ''){
+        lot = 'good'
+      } %>
+      <div class="modal-header">
+        <h1 class="modal-title" id="myModalLabel">Info. <%= lot %></h1>
+        <button type="button" style="background-color: rgb(5, 33, 56); border-radius:40px" class="close" data-dismiss="modal">
+          <span aria-hidden="true"style="color:#fff">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="/rtc22" method="POST" style="font-size: 15px; text-align: center;">
+          <div class="form-group row">
+            <label class="col-form-label col-md-5 col-sm-5 ">BUCKET A</label>
+            <div class="col-md-6 col-sm-6 ">
+              <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+              <input type="text" id="bucket_a" name="bucket_a" class="form-control">
+              <input type="text" id="day_lot" name="day_lot" class="form-control" value="`+result.cherry_lot_id+`">
+              <input type="text" id="certified" name="certified" class="form-control" value="`+result.certified+`">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-form-label col-md-5 col-sm-5 ">BUCKET B</label>
+            <div class="col-md-6 col-sm-6 ">
+              <input type="text" id="bucket_b" name="bucket_b" class="form-control">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-form-label col-md-5 col-sm-5 ">BUCKET C</label>
+            <div class="col-md-6 col-sm-6 ">
+              <input type="text" id="bucket_c" name="bucket_c" class="form-control">
+            </div>
+          </div>
+          
+          <div class="ln_solid"></div>
+          <div class="form-group row pull-right">
+            <div class="offset-md-12 col-md-12 col-sm-12">
+              <input type="hidden" id="action" name="action" value="save_buket">
+              <button  type="submit" class="btn btn-success">Save Bucket</button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Large modal -->

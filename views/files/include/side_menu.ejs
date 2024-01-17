@@ -1,0 +1,150 @@
+<body class="nav-md">
+	<div class="container body">
+		<div class="main_container">
+			<div class="col-md-3 left_col">
+				<div class="left_col scroll-view">
+					<div class="navbar nav_title" style="background: #1ABB9C; ">
+						<a href="/rtc11" class="site_title" style="font-size: 1.7rem;font-weight: bold;">
+							<i class="fa fa-"style="margin-top: -10px;"> <img style="height: 40px; width: 40px;border-radius: 50%;" src="build/images/images.PNG" alt=""> </i> 
+							<span style="color: #0c1e2e;">CO-Chain</span>
+						</a>
+					</div>
+
+					<div class="clearfix"></div>
+
+					<!-- sidebar menu -->
+					<div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+						<div class="menu_section">
+							<ul class="nav side-menu">
+								<li>
+									<a href="/rtc11"><i class="fa fa-home"></i> Dashboard </a>
+								</li>
+								<% if(access.registers == '1'){ %>
+								<li><a><i class="fa fa-edit"></i> Registers <span class="fa fa-chevron-down"></span></a>
+									<ul class="nav child_menu">
+										<li><a href="/rtc15">Recent Registrations</a></li>
+										<li><a href="/rtc14">Station Farmers</a></li>
+										<li><a href="/rtc13">Synced Farmers</a></li>
+									</ul>
+								</li>
+								<% } if(access.inspection == '1'){ %>
+								<li><a><i class="fa fa-folder-open"></i> Inspections <span class="fa fa-chevron-down"></span></a>
+									<ul class="nav child_menu">
+										<li><a href="general_elements.html">Farmer Inspections</a></li>
+										<li><a href="media_gallery.html">Wet Mill Audits</a></li>
+									</ul>
+								</li>
+								<% } if(access.training == '1'){ %>
+								<li><a><i class="fa fa-table"></i> Training <span class="fa fa-chevron-down"></span></a>
+									<ul class="nav child_menu">
+										<li><a href="tables.html">Sessions</a></li>
+										<li><a href="tables_dynamic.html">Participants</a></li>
+										<li><a href="tables_dynamic.html">Courses</a></li>
+									</ul>
+								</li>
+								<% } if(access.coffee_purchase == '1'){ %>
+								<li><a><i class="fa fa-bar-chart-o"></i> Coffee Purchases <span class="fa fa-chevron-down"></span></a>
+									<ul class="nav child_menu">
+										<%  if(access.untraceable == '1'){ %>
+										<li><a href="chartjs.html">Add untraceable coffee</a></li>
+										<% } if(access.sc_daily_journal == '1'){ %>
+										<li><a href="/rtc22">SC Daily Journals</a></li>
+										<% } if(access.sc_daily_journal == '1'){ %>
+										<li><a href="/rtc23">CWS Daily Journals</a></li>
+										<% } if(access.general_harvest == '1'){ %>
+										<li><a href="echarts.html">General Harvest</a></li>
+										<% } if(access.site_harvest == '1'){ %>
+										<li><a href="other_charts.html">Site Harvest</a></li>
+										<% } %>
+									</ul>
+								</li>
+								<% } if(access.coffee_inventory == '1'){ %>
+								<li><a><i class="fa fa-clone"></i>Coffee Inventory <span class="fa fa-chevron-down"></span></a>
+									<ul class="nav child_menu">
+										<li><a href="fixed_sidebar.html">Assigned Parchment</a></li>
+										<li><a href="fixed_footer.html">Parchment Stock</a></li>
+										<li><a href="fixed_footer.html">Deliveries processing</a></li>
+										<li><a href="fixed_footer.html">Parchment Transport</a></li>
+										<li><a href="fixed_footer.html">Parchment Reception</a></li>
+									</ul>
+								</li>
+								<% } if(access.cws_finance == '1'){ %>
+								<li><a><i class="fa fa-windows"></i> CWS Finances <span class="fa fa-chevron-down"></span></a>
+									<ul class="nav child_menu">
+										<li><a href="page_403.html">New Report</a></li>
+										<li><a href="page_404.html">View Report Forms</a></li>
+									</ul>
+								</li>
+								<% } if(access.cash_requisition == '1'){ %>
+								<li><a><i class="fa fa-sitemap"></i> Cash Requisition <span class="fa fa-chevron-down"></span></a>
+									<ul class="nav child_menu">
+										<li><a href="#level1_1">New cash Request</a></li>
+										<li><a href="#level1_1">View Cash Requests</a></li>
+										<li><a href="#level1_2">Pending Requisitions</a></li>
+										<li><a href="#level1_2">Approved Requisitions</a></li>
+									</ul>
+								</li>
+								<% } if(access.app_setting == '1'){ %>
+								<li><a><i class="fa fa-cubes"></i> App Settings <span class="fa fa-chevron-down"></span></a>
+									<ul class="nav child_menu">
+										<li><a href="/rtc1">Translations</a></li>
+										<li><a href="/rtc1">Inspections Question</a></li>
+									</ul>
+								</li>
+								<% } if(access.manage_user == '1'){ %>
+								<li><a><i class="fa fa-users"></i> Manage Users <span class="fa fa-chevron-down"></span></a>
+									<ul class="nav child_menu <%= path === '/rtc12' ? 'active' : '' %>">
+										<li><a href="/rtc12">List users</a></li>
+									</ul>
+								</li>
+								<% } %>
+							</ul>
+						</div>
+
+					</div>
+					<!-- /sidebar menu -->
+
+					<!-- /menu footer buttons -->
+					<div class="sidebar-footer hidden-small">
+						<a data-toggle="tooltip" data-placement="top" title="Settings">
+							<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+						</a>
+						<a data-toggle="tooltip" data-placement="top" title="FullScreen">
+							<span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+						</a>
+						<a data-toggle="tooltip" data-placement="top" title="Lock">
+							<span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+						</a>
+						<a data-toggle="tooltip" data-placement="top" title="Logout" href="/logout">
+							<span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+						</a>
+					</div>
+					<!-- /menu footer buttons -->
+				</div>
+			</div>
+
+			<!-- top navigation -->
+			<div class="top_nav">
+				<div class="nav_menu">
+					<div class="nav toggle">
+						<a id="menu_toggle"><i class="fa fa-bars"></i></a>
+					</div>
+					<nav class="nav navbar-nav">
+						<ul class=" navbar-right" style="font-size: 18px;">
+							<li class="nav-item dropdown open" style="padding-left: 15px;">
+								<a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
+									<img src="build/images/images.PNG" alt=""><%= session_data.Name_Full %>
+								</a>
+								<div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown" style=" margin-top: 15px;font-size: 16px;">
+									
+									<a class="dropdown-item" href="/logout"><i class="fa fa-sign-out pull-right"></i> Log Out</a>
+								</div>
+							</li>
+
+							
+						</ul>
+					</nav>
+				</div>
+			</div>
+			<!-- /top navigation -->
+			

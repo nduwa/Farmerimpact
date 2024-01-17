@@ -1,0 +1,662 @@
+<%- include('include/header.ejs') %>
+<style>
+    .top{
+        display: flex; 
+        margin: 10px; 
+        margin-left: 25%;
+        font-weight: bold;
+    }
+    .top a{
+        color: rgb(0, 88, 46);
+        text-decoration: none;
+    }
+    .top a:hover{
+        color: black;
+    }
+    .top span{
+        font-size: large;
+        margin-top: 10px;
+    }
+</style>
+<%- include('include/side_menu.ejs') %>
+
+<!-- page content -->
+<div class="right_col" role="main">
+  <div class="">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="top">
+          <a href="/rtc12" style="margin-left: 50px;">
+              <span class="fa fa-home"></span>  List All Users</a>
+          <a href="#" style="margin-left: 50px;">
+              <span class="fa fa-phone"></span>  Mobile Menus</a>
+          <a href="#" style="margin-left: 50px;">
+              <span class="fa fa-book"></span>  Web Console Modules</a>
+        </div>
+      </div><!-- /.row -->
+    </div><!-- /.container-fluid -->
+    <hr>
+    <div class="clearfix"></div>
+    <div class="row">
+      <div class="col-md-12 col-sm-12 ">
+        <div class="x_panel">
+          
+          <div class="x_content">
+            <form action="/computer_control" method="post">
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="card card-dark card-outline">
+                    <div class="card-header">
+                      <h3 class="card-title">
+                        <a href="/rtc12" class="btn btn-secondary"> <i class="fa fa-arrow-left"></i> back</a>
+                        <div  class="pull-right">
+                          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                          <input type="hidden" name="userID" value="<%= user.id %>">
+                          <input type="submit" class="btn btn-dark" value="assign">
+                        </div>
+                      </h3>
+                      
+                    </div>
+                    <div class="card-body">
+                      <table class="table table-striped table-valign-middle">
+                        <thead>
+                        <tr>
+                          <th>Menu</th>
+                          <th>Assigned</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                          <tr style="font-weight: bold;">
+                            <td>
+                              <input type="checkbox" name="registers" id="registers" style="width: 12px;">
+                              <small class="text-success mr-1">
+                                <i class="fa fa-arrow-down"></i> 
+                                2009
+                              </small>
+                              Registers
+                            </td>
+                            <td>
+                              <% if(user_access.registers == '1'){ %>
+                                <i class="fa fa-check"></i>
+                              <% } %>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="checkbox" name="recent_register" id="recent_register">
+                              <small class="text-success mr-1">
+                                <i class="fa fa-arrow-up"></i>
+                                2009
+                              </small>
+                              Recent Registrations
+                            </td>
+                            <td>
+                              <% if(user_access.recent_register == '1'){ %>
+                                <i class="fa fa-check"></i>
+                              <% } %>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="checkbox" name="station_farmer" id="station_farmer">
+                              <small class="text-success mr-1">
+                                <i class="fa fa-arrow-up"></i>
+                                2009
+                              </small>
+                              Updated farmers
+                            </td>
+                            <td>
+                              <% if(user_access.station_farmer == '1'){ %>
+                                <i class="fa fa-check"></i>
+                              <% } %>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="checkbox" name="scynced_farmer" id="scynced_farmer">
+                              <small class="text-success mr-1">
+                                <i class="fa fa-arrow-up"></i>
+                                2009
+                              </small>
+                              Scynced Farmer
+                            </td>
+                            <td>
+                              <% if(user_access.scynced_farmer == '1'){ %>
+                                <i class="fa fa-check"></i>
+                              <% } %>
+                            </td>
+                          </tr>
+                          <tr style="font-weight: bold;">
+                            <td>
+                              <input type="checkbox" name="inspection" id="inspection" style="width: 12px;">
+                              <small class="text-maroon mr-1">
+                                <i class="fa fa-arrow-down"></i> 
+                                2009
+                              </small>
+                              Inspections
+                            </td>
+                            <td>
+                              <% if(user_access.inspection == '1'){ %>
+                                <i class="fa fa-check"></i>
+                              <% } %>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="checkbox" name="farmer_inspection" id="farmer_inspection">
+                              <small class="text-maroon mr-1">
+                                <i class="fa fa-arrow-up"></i>
+                                2009
+                              </small>
+                              Farmer Inspections
+                            </td>
+                            <td>
+                              <% if(user_access.farmer_inspection == '1'){ %>
+                                <i class="fa fa-check"></i>
+                              <% } %>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="checkbox" name="wet_mill_audit" id="wet_mill_audit">
+                              <small class="text-maroon mr-1">
+                                <i class="fa fa-arrow-up"></i>
+                                2009
+                              </small>
+                              Wet Mill Audits
+                            </td>
+                            <td>
+                              <% if(user_access.wet_mill_audit == '1'){ %>
+                                <i class="fa fa-check"></i>
+                              <% } %>
+                            </td>
+                          </tr>
+                          <tr style="font-weight: bold;">
+                            <td>
+                              <input type="checkbox" name="training" id="training" style="width: 12px;">
+                              <small class="text-warning mr-1">
+                                <i class="fa fa-arrow-down"></i> 
+                                2009
+                              </small>
+                              Training
+                            </td>
+                            <td>
+                              <% if(user_access.training == '1'){ %>
+                                <i class="fa fa-check"></i>
+                              <% } %>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="checkbox" name="session" id="session">
+                              <small class="text-warning mr-1">
+                                <i class="fa fa-arrow-up"></i>
+                                2009
+                              </small>
+                              Sessions
+                            </td>
+                            <td>
+                              <% if(user_access.session == '1'){ %>
+                                <i class="fa fa-check"></i>
+                              <% } %>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="checkbox" name="participants" id="participants">
+                              <small class="text-warning mr-1">
+                                <i class="fa fa-arrow-up"></i>
+                                2009
+                              </small>
+                              Participants
+                            </td>
+                            <td>
+                              <% if(user_access.participants == '1'){ %>
+                                <i class="fa fa-check"></i>
+                              <% } %>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="checkbox" name="courses" id="courses">
+                              <small class="text-warning mr-1">
+                                <i class="fa fa-arrow-up"></i>
+                                2009
+                              </small>
+                              Courses
+                            </td>
+                            <td>
+                              <% if(user_access.courses == '1'){ %>
+                                <i class="fa fa-check"></i>
+                              <% } %>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <!-- /.card -->
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="card card-dark card-outline">
+                    <div class="card-body">
+                      <table class="table table-striped table-valign-middle">
+                        <thead>
+                        <tr>
+                          <th>Menu</th>
+                          <th>Assigned</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr style="font-weight: bold;">
+                          <td>
+                            <input type="checkbox" name="coffee_purchase" id="coffee_purchase" style="width: 12px;">
+                            <small class="text-danger mr-1">
+                              <i class="fa fa-arrow-down"></i> 
+                              2009
+                            </small>
+                            Coffee Purchases
+                          </td>
+                          <td>
+                            <% if(user_access.coffee_purchase == '1'){ %>
+                              <i class="fa fa-check"></i>
+                            <% } %>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <input type="checkbox" name="untraceable" id="untraceable">
+                            <small class="text-danger mr-1">
+                              <i class="fa fa-arrow-up"></i>
+                              2009
+                            </small>
+                            Add Untraceable coffee
+                          </td>
+                          <td>
+                            <% if(user_access.untraceable == '1'){ %>
+                              <i class="fa fa-check"></i>
+                            <% } %>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <input type="checkbox" name="sc_daily_journal" id="sc_daily_journal">
+                            <small class="text-danger mr-1">
+                              <i class="fa fa-arrow-up"></i>
+                              2009
+                            </small>
+                            SC Daily Journals
+                          </td>
+                          <td>
+                            <% if(user_access.sc_daily_journal == '1'){ %>
+                              <i class="fa fa-check"></i>
+                            <% } %>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <input type="checkbox" name="cws_daily_journal" id="cws_daily_journal">
+                            <small class="text-danger mr-1">
+                              <i class="fa fa-arrow-up"></i>
+                              2009
+                            </small>
+                            CWS Daily Journals
+                          </td>
+                          <td>
+                            <% if(user_access.cws_daily_journal == '1'){ %>
+                              <i class="fa fa-check"></i>
+                            <% } %>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <input type="checkbox" name="general_harvest" id="general_harvest">
+                            <small class="text-danger mr-1">
+                              <i class="fa fa-arrow-up"></i>
+                              2009
+                            </small>
+                            General Harvest
+                          </td>
+                          <td>
+                            <% if(user_access.general_harvest == '1'){ %>
+                              <i class="fa fa-check"></i>
+                            <% } %>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <input type="checkbox" name="site_harvest" id="site_harvest">
+                            <small class="text-danger mr-1">
+                              <i class="fa fa-arrow-up"></i>
+                              2009
+                            </small>
+                            Site Harvest
+                          </td>
+                          <td>
+                            <% if(user_access.site_harvest == '1'){ %>
+                              <i class="fa fa-check"></i>
+                            <% } %>
+                          </td>
+                        </tr>
+                        <tr style="font-weight: bold;">
+                          <td>
+                            <input type="checkbox" name="coffee_inventory" id="coffee_inventory" style="width: 12px;">
+                            <small class="text-success mr-1">
+                              <i class="fa fa-arrow-down"></i> 
+                              2009
+                            </small>
+                            Coffee Inventory
+                          </td>
+                          <td>
+                            <% if(user_access.coffee_inventory == '1'){ %>
+                              <i class="fa fa-check"></i>
+                            <% } %>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <input type="checkbox" name="assign_parchment" id="assign_parchment">
+                            <small class="text-success mr-1">
+                              <i class="fa fa-arrow-up"></i>
+                              2009
+                            </small>
+                            Assigned Parchment
+                          </td>
+                          <td>
+                            <% if(user_access.assign_parchment == '1'){ %>
+                              <i class="fa fa-check"></i>
+                            <% } %>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <input type="checkbox" name="parchment_stock" id="parchment_stock">
+                            <small class="text-success mr-1">
+                              <i class="fa fa-arrow-up"></i>
+                              2009
+                            </small>
+                            Parchment Stock
+                          </td>
+                          <td>
+                            <% if(user_access.parchment_stock == '1'){ %>
+                              <i class="fa fa-check"></i>
+                            <% } %>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <input type="checkbox" name="parchment_processing" id="parchment_processing">
+                            <small class="text-success mr-1">
+                              <i class="fa fa-arrow-up"></i>
+                              2009
+                            </small>
+                            Parchment Processing
+                          </td>
+                          <td>
+                            <% if(user_access.parchment_processing == '1'){ %>
+                              <i class="fa fa-check"></i>
+                            <% } %>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <input type="checkbox" name="parchment_transport" id="parchment_transport">
+                            <small class="text-success mr-1">
+                              <i class="fa fa-arrow-up"></i>
+                              2009
+                            </small>
+                            Parchment Transport
+                          </td>
+                          <td>
+                            <% if(user_access.parchment_transport == '1'){ %>
+                              <i class="fa fa-check"></i>
+                            <% } %>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <input type="checkbox" name="parchment_reception" id="parchment_reception">
+                            <small class="text-success mr-1">
+                              <i class="fa fa-arrow-up"></i>
+                              2009
+                            </small>
+                            Parchment Reception
+                          </td>
+                          <td>
+                            <% if(user_access.parchment_reception == '1'){ %>
+                              <i class="fa fa-check"></i>
+                            <% } %>
+                          </td>
+                        </tr>
+                        
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="card card-dark card-outline">
+                    <div class="card-body">
+                      <table class="table table-striped table-valign-middle">
+                        <thead>
+                        <tr>
+                          <th>Menu</th>
+                          <th>Assigned</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                          <tr style="font-weight: bold;">
+                            <td>
+                              <input type="checkbox" name="cws_finance" id="cws_finance" style="width: 12px;">
+                              <small class="text-success mr-1">
+                                <i class="fa fa-arrow-down"></i> 
+                                2009
+                              </small>
+                              CWS Finance
+                            </td>
+                            <td>
+                              <% if(user_access.cws_finance == '1'){ %>
+                                <i class="fa fa-check"></i>
+                              <% } %>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="checkbox" name="new_report" id="new_report">
+                              <small class="text-success mr-1">
+                                <i class="fa fa-arrow-up"></i>
+                                2009
+                              </small>
+                              New Report
+                            </td>
+                            <td>
+                              <% if(user_access.new_report == '1'){ %>
+                                <i class="fa fa-check"></i>
+                              <% } %>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="checkbox" name="view_report" id="view_report">
+                              <small class="text-success mr-1">
+                                <i class="fa fa-arrow-up"></i>
+                                2009
+                              </small>
+                              View Report Forms
+                            </td>
+                            <td>
+                              <% if(user_access.view_report == '1'){ %>
+                                <i class="fa fa-check"></i>
+                              <% } %>
+                            </td>
+                          </tr>
+                          <tr style="font-weight: bold;">
+                            <td>
+                              <input type="checkbox" name="cash_requisition" id="cash_requisition" style="width: 12px;">
+                              <small class="text-info mr-1">
+                                <i class="fa fa-arrow-down"></i> 
+                                2009
+                              </small>
+                              Cash Requisition
+                            </td>
+                            <td>
+                              <% if(user_access.cash_requisition == '1'){ %>
+                                <i class="fa fa-check"></i>
+                              <% } %>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="checkbox" name="new_cash_requisition" id="new_cash_requisition">
+                              <small class="text-info mr-1">
+                                <i class="fa fa-arrow-up"></i>
+                                2009
+                              </small>
+                              New cash Requisition
+                            </td>
+                            <td>
+                              <% if(user_access.new_cash_requisition == '1'){ %>
+                                <i class="fa fa-check"></i>
+                              <% } %>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="checkbox" name="view_cash_requisition" id="view_cash_requisition">
+                              <small class="text-info mr-1">
+                                <i class="fa fa-arrow-up"></i>
+                                2009
+                              </small>
+                              View Cash Requisition
+                            </td>
+                            <td>
+                              <% if(user_access.view_cash_requisition == '1'){ %>
+                                <i class="fa fa-check"></i>
+                              <% } %>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="checkbox" name="pending_requisition" id="pending_requisition">
+                              <small class="text-info mr-1">
+                                <i class="fa fa-arrow-up"></i>
+                                2009
+                              </small>
+                              Pending Requisition
+                            </td>
+                            <td>
+                              <% if(user_access.pending_requisition == '1'){ %>
+                                <i class="fa fa-check"></i>
+                              <% } %>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="checkbox" name="approved_requisition" id="approved_requisition">
+                              <small class="text-info mr-1">
+                                <i class="fa fa-arrow-up"></i>
+                                2009
+                              </small>
+                              Approved Requisition
+                            </td>
+                            <td>
+                              <% if(user_access.approved_requisition == '1'){ %>
+                                <i class="fa fa-check"></i>
+                              <% } %>
+                            </td>
+                          </tr>
+                          <tr style="font-weight: bold;">
+                            <td>
+                              <input type="checkbox" name="app_setting" id="app_setting" style="width: 12px;">
+                              <small class="text-primary mr-1">
+                                <i class="fa fa-arrow-down"></i> 
+                                2009
+                              </small>
+                              App Setting
+                            </td>
+                            <td>
+                              <% if(user_access.app_setting == '1'){ %>
+                                <i class="fa fa-check"></i>
+                              <% } %>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="checkbox" name="translation" id="translation">
+                              <small class="text-primary mr-1">
+                                <i class="fa fa-arrow-up"></i>
+                                2009
+                              </small>
+                              Translations
+                            </td>
+                            <td>
+                              <% if(user_access.translation	 == '1'){ %>
+                                <i class="fa fa-check"></i>
+                              <% } %>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="checkbox" name="inspection_question" id="inspection_question">
+                              <small class="text-primary mr-1">
+                                <i class="fa fa-arrow-up"></i>
+                                2009
+                              </small>
+                              Inspections Question
+                            </td>
+                            <td>
+                              <% if(user_access.inspection_question	 == '1'){ %>
+                                <i class="fa fa-check"></i>
+                              <% } %>
+                            </td>
+                          </tr>
+                          <tr style="font-weight: bold;">
+                            <td>
+                              <input type="checkbox" name="manage_user" id="manage_user">
+                              <small class="text-warning mr-1">
+                                <i class="fa fa-arrow-up"></i>
+                                2009
+                              </small>
+                              Manage Users
+                            </td>
+                            <td>
+                              <% if(user_access.manage_user	 == '1'){ %>
+                                <i class="fa fa-check"></i>
+                              <% } %>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <input type="checkbox" name="list_user" id="list_user">
+                              <small class="text-warning mr-1">
+                                <i class="fa fa-arrow-up"></i>
+                                2009
+                              </small>
+                              List users
+                            </td>
+                            <td>
+                              <% if(user_access.list_user	 == '1'){ %>
+                                <i class="fa fa-check"></i>
+                              <% } %>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                    <!-- /.card -->
+                  </div>
+                </div>
+                <!-- /.col -->
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    
+  </div>
+</div>
+<!-- /page content -->
+
+<%- include('include/footer.ejs') %>
